@@ -1,0 +1,68 @@
+From 2102f23ad6c398b57e9ae6640e2d8bb19ecd515d Mon Sep 17 00:00:00 2001
+From: Cjacker <jianzhong.huang@i-soft.com.cn>
+Date: Tue, 30 Jun 2020 15:21:09 +0800
+Subject: [PATCH 2/4] Fix tab/space indentation issue
+
+---
+ src/cmd/devdraw/x11-screen.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
+
+diff --git a/src/cmd/devdraw/x11-screen.c b/src/cmd/devdraw/x11-screen.c
+index 77e39299..4a43d712 100644
+--- a/src/cmd/devdraw/x11-screen.c
++++ b/src/cmd/devdraw/x11-screen.c
+@@ -168,8 +168,8 @@ gfx_main(void)
+ 	/*
+ 	 * Connect to X server.
+ 	 */
+-        setlocale(LC_CTYPE, "");
+-        XSetLocaleModifiers("");
++	setlocale(LC_CTYPE, "");
++	XSetLocaleModifiers("");
+ 	_x.display = XOpenDisplay(NULL);
+ 	if(_x.display == nil){
+ 		disp = getenv("DISPLAY");
+@@ -317,7 +317,7 @@ xloop(void)
+ 		while(XPending(_x.display)) {
+ 			XNextEvent(_x.display, &event);
+ 			if (XFilterEvent(&event, None))
+-				  continue;
++				continue;
+ 			runxevent(&event);
+ 		}
+ 	}
+@@ -500,7 +500,6 @@ runxevent(XEvent *xev)
+ 
+ 		if((c = _xtoplan9kbd(xev)) < 0)
+ 			return;
+-
+ 		gfx_keystroke(w->client, c);
+ 		break;
+ 
+@@ -634,15 +633,14 @@ xattach(Client *client, char *label, char *winsize)
+ 	);
+ 
+         /* input methods */
+-        xim = XOpenIM(_x.display, 0, 0, 0);
+-        spotlist = XVaCreateNestedList(0, XNSpotLocation, &spot,
+-                                              NULL);
+-
+-        if (xim)
+-                xic = XCreateIC(xim, 
+-				XNInputStyle, XIMPreeditNothing|XIMStatusNothing, 
+-				XNClientWindow, w->drawable, 
+-				NULL);
++	xim = XOpenIM(_x.display, 0, 0, 0);
++	spotlist = XVaCreateNestedList(0, XNSpotLocation, &spot, NULL);
++
++	if (xim)
++	xic = XCreateIC(xim, 
++			XNInputStyle, XIMPreeditNothing|XIMStatusNothing, 
++			XNClientWindow, w->drawable, 
++			NULL);
+ 
+ 	/*
+ 	 * Label and other properties required by ICCCCM.
+-- 
+2.35.1
+

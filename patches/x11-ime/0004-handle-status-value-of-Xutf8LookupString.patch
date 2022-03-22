@@ -1,0 +1,63 @@
+From c12a32a90f7833d0685d781fc3341dca73463e0a Mon Sep 17 00:00:00 2001
+From: Cjacker <jianzhong.huang@i-soft.com.cn>
+Date: Tue, 7 Jul 2020 00:41:38 +0800
+Subject: [PATCH 4/4] handle status value of Xutf8LookupString
+
+---
+ src/cmd/devdraw/x11-screen.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
+
+diff --git a/src/cmd/devdraw/x11-screen.c b/src/cmd/devdraw/x11-screen.c
+index 7ca7d840..21be5802 100644
+--- a/src/cmd/devdraw/x11-screen.c
++++ b/src/cmd/devdraw/x11-screen.c
+@@ -428,12 +428,25 @@ runxevent(XEvent *xev)
+ 	case KeyRelease:
+ 	case KeyPress:
+ 		ke = (XKeyEvent*)xev;
+-		if (xic && xev->type == KeyPress) {
++		if(xic && xev->type == KeyPress){
+ 			bzero(buf, 64);
+ 			int len = Xutf8LookupString(xic, ke, buf, sizeof buf, &k, &status);
+-			if(len > 0)
+-				runesnprint(rbuf, 64, "%s", buf);
+-		} else 
++			switch(status) {
++			case XLookupChars:
++				if(len > 0)
++					runesnprint(rbuf, 64, "%s", buf);
++				int i = 0;
++				while(i < runestrlen(rbuf)) {
++					gfx_keystroke(w->client, rbuf[i++]);
++				}
++				return;
++			case XLookupKeySym:
++			case XLookupBoth:
++				break;
++			default: /* XLookupNone, XBufferOverflow */
++				return;
++			}
++		}else 
+ 			XLookupString(ke, NULL, 0, &k, NULL);
+ 
+ 		c = ke->state;
+@@ -488,16 +501,6 @@ runxevent(XEvent *xev)
+ 			return;
+ 		}
+ 
+-		if(xic && xev->type == KeyPress) {
+-			int nr = runestrlen(rbuf);
+-			if (status == XLookupChars && nr > 0 ) {
+-				int i = 0;
+-				while(i < nr) {
+-					gfx_keystroke(w->client, rbuf[i++]);
+-				}
+-			}
+-		}
+-
+ 		if((c = _xtoplan9kbd(xev)) < 0)
+ 			return;
+ 		gfx_keystroke(w->client, c);
+-- 
+2.35.1
+

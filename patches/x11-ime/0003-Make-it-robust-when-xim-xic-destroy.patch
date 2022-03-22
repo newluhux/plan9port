@@ -1,0 +1,61 @@
+From 5d538926e8a06f467397fbb208b9f91a5f348376 Mon Sep 17 00:00:00 2001
+From: Cjacker <jianzhong.huang@i-soft.com.cn>
+Date: Mon, 6 Jul 2020 19:29:54 +0800
+Subject: [PATCH 3/4] Make it robust when xim/xic destroy.
+
+---
+ src/cmd/devdraw/x11-screen.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
+
+diff --git a/src/cmd/devdraw/x11-screen.c b/src/cmd/devdraw/x11-screen.c
+index 4a43d712..7ca7d840 100644
+--- a/src/cmd/devdraw/x11-screen.c
++++ b/src/cmd/devdraw/x11-screen.c
+@@ -520,6 +520,19 @@ runxevent(XEvent *xev)
+ 	}
+ }
+ 
++static void
++ximdestroy(XIM xim, XPointer client, XPointer call)
++{
++	xim = NULL;
++	XFree(spotlist);
++}
++
++static int
++xicdestroy(XIC xim, XPointer client, XPointer call)
++{
++	xic = NULL;
++	return 1;
++}
+ 
+ static Memimage*
+ xattach(Client *client, char *label, char *winsize)
+@@ -633,14 +646,20 @@ xattach(Client *client, char *label, char *winsize)
+ 	);
+ 
+         /* input methods */
++	XIMCallback imdestroy = { .client_data = NULL, .callback = ximdestroy };
++	XICCallback icdestroy = { .client_data = NULL, .callback = xicdestroy };
++
+ 	xim = XOpenIM(_x.display, 0, 0, 0);
+-	spotlist = XVaCreateNestedList(0, XNSpotLocation, &spot, NULL);
+ 
+-	if (xim)
+-	xic = XCreateIC(xim, 
++	if(xim){
++		XSetIMValues(xim, XNDestroyCallback, &imdestroy, NULL);
++		spotlist = XVaCreateNestedList(0, XNSpotLocation, &spot, NULL);
++		xic = XCreateIC(xim, 
+ 			XNInputStyle, XIMPreeditNothing|XIMStatusNothing, 
+-			XNClientWindow, w->drawable, 
++			XNClientWindow, w->drawable,
++			XNDestroyCallback, &icdestroy,	
+ 			NULL);
++	}
+ 
+ 	/*
+ 	 * Label and other properties required by ICCCCM.
+-- 
+2.35.1
+
