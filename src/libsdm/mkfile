@@ -1,0 +1,11 @@
+<$PLAN9/src/mkhdr
+
+LIB=libsdm.a
+
+OFILES=\
+	libsdm.$O\
+
+HFILES=\
+	$PLAN9/include/sdm.h\
+
+<$PLAN9/src/mksyslib
