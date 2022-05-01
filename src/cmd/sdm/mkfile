@@ -1,0 +1,19 @@
+<$PLAN9/src/mkhdr
+
+TARG=sdm
+
+HFILES=sdm.h
+OFILES=\
+	sdm.$O\
+
+LIB=$PLAN9/lib/libsdm.a
+
+UPDATE=\
+	mkfile\
+	${OFILES:%.$O=%.c}\
+	$HFILES\
+
+<$PLAN9/src/mkone
+
+BIN=$PLAN9/bin
+
