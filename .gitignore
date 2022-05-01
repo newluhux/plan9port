@@ -169,6 +169,7 @@ bin/rsagen
 bin/sam
 bin/samterm
 bin/scat
+bin/sdm
 bin/secstore
 bin/secstored
 bin/secuser
