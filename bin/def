@@ -1,0 +1,7 @@
+#!/usr/local/plan9/bin/rc
+
+# from : https://pdos.csail.mit.edu/~rsc/def
+
+. 9.rc
+
+g $1 *.h /usr/local/plan9/include/*.h >[2]/dev/null
