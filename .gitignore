@@ -26,6 +26,7 @@ bin/auxstats
 bin/awk
 bin/basename
 bin/bc
+bin/bdf2subf
 bin/bmp
 bin/bunzip2
 bin/bzip2
