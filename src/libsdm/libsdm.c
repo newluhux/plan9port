@@ -17,6 +17,25 @@ ntohl(int x)
 Stardict_dict *stardict_open(char *index, char *data, char *info) {
 	Stardict_dict *ret = (Stardict_dict *)malloc(sizeof(Stardict_dict));
 
+	int testfd;
+
+	testfd = open(index,OREAD);
+	if (testfd == -1) {
+		goto err;
+	}
+	close(testfd);
+	testfd = open(data,OREAD);
+	if (testfd == -1) {
+		goto err;
+	}
+	close(testfd);
+	testfd = open(info,OREAD);
+	if (testfd == -1) {
+		goto err;
+	}
+	close(testfd);
+
+
 	// 打开文件
 	ret->index = Bopen(index,OREAD);
 	if (ret->index == nil) {
@@ -34,18 +53,30 @@ Stardict_dict *stardict_open(char *index, char *data, char *info) {
 	return ret;
 
 err:
-	Bterm(ret->index);
-	Bterm(ret->data);
-	Bterm(ret->info);
+	if (ret->index != nil) {
+		Bterm(ret->index);
+	}
+	if (ret->data != nil) {
+		Bterm(ret->data);
+	}
+	if (ret->info != nil) {
+		Bterm(ret->info);
+	}
 	free(ret);
 	ret = (Stardict_dict *)nil;
 	return ret;
 }
 
 int stardict_close(Stardict_dict *stardict) {
-	Bterm(stardict->index);
-	Bterm(stardict->data);
-	Bterm(stardict->info);
+	if (stardict->index != nil) {
+		Bterm(stardict->index);
+	}
+	if (stardict->data != nil) {
+		Bterm(stardict->data);
+	}
+	if (stardict->info != nil) {
+		Bterm(stardict->info);
+	}
 	free(stardict);
 	
 	return 1;
