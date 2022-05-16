@@ -1,9 +1,0 @@
-#!/usr/local/plan9/bin/rc
-
-. 9.rc
-
-for (i in $*) {
-	echo ' '
-	sdm $i
-	echo ' '
-}
