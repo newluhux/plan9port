@@ -1,8 +1,4 @@
 #!/usr/local/plan9/bin/rc
 
 . 9.rc
-
-while (echo ' ') {
-	line=`{read -n 1}
-	sdm $line
-}
+sdm
