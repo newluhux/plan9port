@@ -30,11 +30,13 @@ loopgetc:
 			break;
 		} else if (c == ' ') {
 			break;
+		} else {
+			word[i] = c;
+			++i;
 		}
-		word[i++] = c;
 	}
-	if (word[i] != '\0' && i < 256) {
-		word[i+1] = '\0';
+	if (word[i-1] != '\0' && i < 256) {
+		word[i] = '\0';
 	}
 	if (strlen(word) < 1) {
 		goto loopgetc;
