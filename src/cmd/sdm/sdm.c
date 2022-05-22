@@ -15,11 +15,12 @@ static char *getword(Biobuf *input) {
 
 	char word[256];
 	int i;
+loopgetc:
 
 	i = 0;
 	word[i] ='\0';
 
-loopgetc:
+
 	while (1) {
 		c = Bgetc(input);
 		if (c == Beof) {
@@ -35,7 +36,7 @@ loopgetc:
 			++i;
 		}
 	}
-	if (word[i-1] != '\0' && i < 256) {
+	if (word[i] != '\0' && i < 256) {
 		word[i] = '\0';
 	}
 	if (strlen(word) < 1) {
