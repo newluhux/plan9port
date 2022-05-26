@@ -24,7 +24,7 @@ int rcpid;
 int rcfd;
 int sfd;
 Window *w;
-char *fontname;
+char *fontname = "/lib/font/bit/unifont/font";
 
 void derror(Display*, char*);
 void	mousethread(void*);
