@@ -87,11 +87,11 @@ END{
 
 case "${SYSNAME:-`uname`}" in 
 SunOS)
-	ps -aA -o 'user,pid,stime,time,rss,s,s,args' | sed 1d |
+	/bin/ps -aA -o 'user,pid,stime,time,rss,s,s,args' | sed 1d |
 		nawk -f /tmp/awk.xxx$$ | sort -n +1
 	;;
 *)
-	ps -axww -o 'user,pid,start,time,rss,stat,wchan,command' | sed 1d |
+	/bin/ps -axww -o 'user,pid,start,time,rss,stat,wchan,command' | sed 1d |
 		awk -f /tmp/awk.xxx$$ | sort -n +1
 	;;
 esac
