@@ -123,7 +123,7 @@ init(void)
 	tinyfont = openfont(display, "/lib/font/bit/misc/ascii.5x7.font");
 	if(tinyfont == nil)
 		tinyfont = font;
-	mediumfont = openfont(display, "/lib/font/bit/pelm/latin1.8.font");
+	mediumfont = openfont(display, "/lib/font/bit/unifont/font");
 	if(mediumfont == nil)
 		mediumfont = font;
 	datefont = font;

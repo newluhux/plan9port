@@ -454,7 +454,7 @@ main(int argc, char **argv)
 
 	sortlabels = 0;
 	showwmnames = 0;
-	fontname = "/lib/font/bit/lucsans/unicode.8.font";
+	fontname = "/lib/font/unifont/font";
 
 	ARGBEGIN {
 	case 'W':

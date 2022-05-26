@@ -54,7 +54,7 @@ x ...\n	device control functions:
 
 int	hpos;	/* horizontal position where we are supposed to be next (left = 0) */
 int	vpos;	/* current vertical position (down positive) */
-char	*fontfile	= "/lib/font/bit/pelm/unicode.9x24.font";
+char	*fontfile	= "/lib/font/bit/unifont/font";
 
 char	*pschar(char *, char *hex, int *wid, int *ht);
 int	kanji(char *);

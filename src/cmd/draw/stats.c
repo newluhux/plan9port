@@ -186,7 +186,7 @@ colinit(void)
 	if(fontname)
 		mediumfont = openfont(display, fontname);
 	if(mediumfont == nil)
-		mediumfont = openfont(display, "/lib/font/bit/pelm/latin1.8.font");
+		mediumfont = openfont(display, "/lib/font/bit/unifont/font");
 	if(mediumfont == nil)
 		mediumfont = font;
 
