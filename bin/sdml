@@ -1,4 +1,0 @@
-#!/usr/local/plan9/bin/rc
-
-. 9.rc
-sdm
